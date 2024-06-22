@@ -27,6 +27,13 @@ export const Profile = () => {
   const filePickerRef = useRef<HTMLInputElement>(null);
   const [imageProgress, setImageProgress] = useState<string>("");
   const [imageUploadError, setImageUploadError] = useState<string | null>(null);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [updateUserSuccess, setupdateUserSuccess] = useState<string | null>(
+    null
+  );
+  const [updateUserFailure, setupdateUserFailure] = useState<string | null>(
+    null
+  );
   const [formData, setformData] = useState({});
 
   const storage = getStorage(app);
@@ -39,6 +46,7 @@ export const Profile = () => {
   }, [imageFile]);
 
   const uploadImage = () => {
+    setImageUploading(true);
     if (!imageFile) {
       console.error("No image file to upload.");
       return;
@@ -62,10 +70,12 @@ export const Profile = () => {
         .then((downloadUrl) => {
           setImageFileUrl(downloadUrl);
           setformData({ ...formData, profilePicture: downloadUrl });
+          setImageUploading(false);
         })
         .catch((error) => {
           setImageUploadError("Error retrieving download URL.");
           console.error("Download URL error:", error);
+          setImageUploading(false);
         });
     };
 
@@ -97,7 +107,15 @@ export const Profile = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setupdateUserFailure(null);
+    setupdateUserSuccess(null);
     if (Object.keys(formData).length === 0) {
+      setupdateUserFailure("No changes were made");
+      return;
+    }
+
+    if (imageUploading) {
+      setupdateUserFailure("Please wait for our image to upload");
       return;
     }
 
@@ -119,11 +137,15 @@ export const Profile = () => {
 
       if (!response.ok) {
         dispatch(updateFailure(data.message));
+        setupdateUserFailure(data.message);
       } else {
         dispatch(updateSuccess(data));
+        setIsEditing(false);
+        setupdateUserSuccess("User's profile is updated successfully");
       }
-    } catch (error) {
+    } catch (error: any) {
       dispatch(updateFailure(error));
+      setupdateUserFailure(error.message);
     }
   };
 
@@ -235,6 +257,16 @@ export const Profile = () => {
           </>
         )}
       </div>
+      {updateUserSuccess && (
+        <Alert color="success" className="mt-5">
+          {updateUserSuccess}
+        </Alert>
+      )}
+      {updateUserFailure && (
+        <Alert color="failure" className="mt-5">
+          {updateUserFailure}
+        </Alert>
+      )}
     </div>
   );
 };
