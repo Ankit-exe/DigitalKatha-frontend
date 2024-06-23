@@ -24,7 +24,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const Profile = () => {
-  const { currentUser, error } = useSelector((state: any) => state.user);
+  const { currentUser, error, loading } = useSelector((state: any) => state.user);
   const [isEditing, setIsEditing] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageFileUrl, setImageFileUrl] = useState<string>("");
@@ -267,10 +267,11 @@ export const Profile = () => {
         </div>
         {isEditing && (
           <Button
+            disabled={loading || imageUploading}
             type="submit"
             className="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm text-center"
-          >
-            Update
+          >{loading ? 'Loading...' : "Update"}
+         
           </Button>
         )}
       </form>

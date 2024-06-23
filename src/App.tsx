@@ -7,6 +7,7 @@ import { Projects } from "./pages/Projects";
 import { SignUp } from "./pages/SignUp";
 import { Layout } from "./layout/Layout";
 import PrivateRoute from "./components/PrivateRoute";
+import { PostCreate } from "./pages/PostCreate";
 
 function App() {
   return (
@@ -37,6 +38,14 @@ function App() {
             element={
               <Layout>
                 <Dashboard />
+              </Layout>
+            }
+          />
+          <Route
+            path="/create-post"
+            element={
+              <Layout>
+                <PostCreate />
               </Layout>
             }
           />
