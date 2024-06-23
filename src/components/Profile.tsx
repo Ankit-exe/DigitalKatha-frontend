@@ -5,7 +5,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { Alert, Button, Label, TextInput } from "flowbite-react";
+import { Alert, Button, Label, Modal, TextInput } from "flowbite-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import app from "../firebase";
@@ -15,12 +15,16 @@ import {
   updateStart,
   updateSuccess,
   updateFailure,
+  deleteUserStart,
+  deleteUserFailure,
+  deleteUserSuccess,
 } from "../redux/user/userSlice";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const Profile = () => {
-  const { currentUser } = useSelector((state: any) => state.user);
+  const { currentUser, error } = useSelector((state: any) => state.user);
   const [isEditing, setIsEditing] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageFileUrl, setImageFileUrl] = useState<string>("");
@@ -35,6 +39,7 @@ export const Profile = () => {
     null
   );
   const [formData, setformData] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   const storage = getStorage(app);
   const dispatch = useDispatch();
@@ -122,7 +127,7 @@ export const Profile = () => {
     try {
       dispatch(updateStart());
       const response = await fetch(
-        `${API_BASE_URL}/api/user/update/${currentUser._id}`,
+        `${API_BASE_URL}/api/user/update/${currentUser.userId}`,
         {
           method: "PUT",
           headers: {
@@ -146,6 +151,33 @@ export const Profile = () => {
     } catch (error: any) {
       dispatch(updateFailure(error));
       setupdateUserFailure(error.message);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    setShowModal(false);
+    try {
+      dispatch(deleteUserStart());
+
+      const res = await fetch(
+        `${API_BASE_URL}/api/user/delete/${currentUser.userId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(deleteUserFailure(data.message));
+      } else {
+        dispatch(deleteUserSuccess(data));
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        dispatch(deleteUserFailure(error.message));
+      } else {
+        dispatch(deleteUserFailure("An unexpected error occurred."));
+      }
     }
   };
 
@@ -245,7 +277,12 @@ export const Profile = () => {
       <div>
         {!isEditing && (
           <>
-            <span className="text-red-600 float-left cursor-pointer hover:text-red-500">
+            <span
+              onClick={() => {
+                setShowModal(true);
+              }}
+              className="text-red-600 float-left cursor-pointer hover:text-red-500"
+            >
               Delete Account
             </span>
             <span
@@ -257,6 +294,7 @@ export const Profile = () => {
           </>
         )}
       </div>
+      <div className="mt-20">
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
           {updateUserSuccess}
@@ -267,6 +305,42 @@ export const Profile = () => {
           {updateUserFailure}
         </Alert>
       )}
+      {error && (
+        <Alert color="success" className="mt-5">
+          {error}
+        </Alert>
+      )}
+
+      </div>
+    
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center ">
+            <HiOutlineExclamationCircle className="h-14 w-14 text-red-500 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="text-2xl font-semibold text-gray-800">
+              Delete account
+            </h3>
+            <span className="text-sm text-gray-500 font-medium">
+              Deleting your account will remove all of your information form our
+              database. This cannot be undone.
+            </span>
+            <div className="flex justify-center gap-4 mt-5">
+              <Button color="failure" onClick={handleDeleteUser}>
+                Yes
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
