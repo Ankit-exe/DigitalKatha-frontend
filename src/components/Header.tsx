@@ -8,12 +8,32 @@ import "../index.css";
 import { AppstoreTwoTone, BookTwoTone, HomeTwoTone } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toogleTheme } from "../redux/theme/themeSlice";
+import { signoutSuccess } from "../redux/user/userSlice";
+
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const Header = () => {
   const dispatch = useDispatch();
   const path = useLocation().pathname;
   const { currentUser } = useSelector((state: any) => state.user);
   const { theme } = useSelector((state: any) => state.theme);
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/user/signout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Navbar className="border-b-2">
@@ -51,7 +71,7 @@ export const Header = () => {
                 <Dropdown.Item>Profile</Dropdown.Item>
               </Link>
               <Dropdown.Divider />
-              <Dropdown.Item>Sign out</Dropdown.Item>
+              <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
             </Dropdown>
           </>
         ) : (
@@ -79,7 +99,11 @@ export const Header = () => {
             Home
           </Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/about"} as={"div"} className="dark:bg-gray">
+        <Navbar.Link
+          active={path === "/about"}
+          as={"div"}
+          className="dark:bg-gray"
+        >
           <Link
             to="/about"
             className={
