@@ -11,10 +11,16 @@ import {
 } from "firebase/storage";
 import { CircularProgressbar } from "react-circular-progressbar";
 import app from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
-  imageUrl?: string;
+  image?: string;
+  title?: string;
+  category?: string;
+  content?: string;
 }
+
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const PostCreate = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -23,7 +29,9 @@ export const PostCreate = () => {
   );
   const [imageUploadError, setImageUplaodError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({});
-  console.log(formData);
+  const [publishError, setPublishError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleUploadImage = async () => {
     try {
@@ -51,7 +59,7 @@ export const PostCreate = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImageUplaodError(null);
             setImageUplaodProgress(null);
-            setFormData({ ...formData, imageUrl: downloadURL });
+            setFormData({ ...formData, image: downloadURL });
           });
         }
       );
@@ -67,10 +75,37 @@ export const PostCreate = () => {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setPublishError(null);
+      const res = await fetch(`${API_BASE_URL}/api/post/create`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+      }
+
+      if(res.ok){
+        setPublishError(null);
+        navigate(`/post/${data.slug}`)
+      }
+    } catch (error) {
+      setPublishError("Something went wrong");
+    }
+  };
+
   return (
     <div className="container p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -78,8 +113,15 @@ export const PostCreate = () => {
             required
             id="title"
             className="flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
-          <Select>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value="uncategorized">Select a category</option>
             {options.map((option) => (
               <option key={option.id} value={option.option}>
@@ -111,9 +153,9 @@ export const PostCreate = () => {
           </Button>
         </div>
         {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
-        {formData?.imageUrl && (
+        {formData?.image && (
           <img
-            src={formData.imageUrl}
+            src={formData.image}
             alt="upload"
             className="w-full h-72 object-cover"
           />
@@ -122,6 +164,9 @@ export const PostCreate = () => {
           theme="snow"
           placeholder="Write something..."
           className="h-72 mb-12"
+          onChange={(value) => {
+            setFormData({ ...formData, content: value });
+          }}
         />
         <Button
           type="submit"
@@ -130,6 +175,7 @@ export const PostCreate = () => {
         >
           Create Post
         </Button>
+        {publishError && <Alert color="failure">{publishError}</Alert>}
       </form>
     </div>
   );
