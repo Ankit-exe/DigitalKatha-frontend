@@ -51,7 +51,7 @@ export const PostCreate = () => {
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUplaodProgress(progress.toFixed(0));
         },
-        (error) => {
+        () => {
           setImageUplaodError("Image upload failed");
           setImageUplaodProgress(null);
         },
