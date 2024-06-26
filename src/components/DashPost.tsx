@@ -135,7 +135,7 @@ export const DashPost = () => {
                   <Table.Cell>
                     <Link
                       className="text-green-500 font-medium hover:text-green-400"
-                      to={`/update-post/${post.slug}`}
+                      to={`/update-post/${post._id}`}
                     >
                       Update
                     </Link>
