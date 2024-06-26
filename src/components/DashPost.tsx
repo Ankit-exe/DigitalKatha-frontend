@@ -16,6 +16,7 @@ interface Data {
 export const DashPost = () => {
   const { currentUser } = useSelector((state: any) => state.user);
   const [userPosts, setUserPosts] = useState<Data[]>([]);
+  const [showMore, setShowMore] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,6 +27,9 @@ export const DashPost = () => {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
+          if (data.posts.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         if (error) {
@@ -38,8 +42,24 @@ export const DashPost = () => {
     }
   }, [currentUser.userId]);
 
+  const handleShowMore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/api/post/getposts?userId=${currentUser.userId}&startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUserPosts((prev) => [...prev, ...data.posts]);
+        if(data.posts.length < 9){
+          setShowMore(false)
+        }
+      }
+    } catch (error) {}
+  };
+
   return (
-    <div className="table-auto overflow-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-300 ">
+    <div className="table-auto w-full overflow-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-300 ">
       {currentUser && userPosts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md dark:bg-gray-800">
@@ -89,6 +109,14 @@ export const DashPost = () => {
               </Table.Body>
             ))}
           </Table>
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full text-teal-500 self-center text-sm py-7"
+            >
+              Show more
+            </button>
+          )}
         </>
       ) : (
         <p>You have no post yet</p>
