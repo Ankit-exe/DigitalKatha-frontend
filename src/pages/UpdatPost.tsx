@@ -32,6 +32,7 @@ export const UpdatePost = () => {
   const [imageUploadError, setImageUplaodError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({});
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [postid, setpostId] = useState(null);
   const { postId } = useParams();
 
   const { currentUser } = useSelector((state: any) => state.user);
@@ -46,13 +47,13 @@ export const UpdatePost = () => {
         );
         const data = await res.json();
         if (!res.ok) {
-          console.log(data.message);
           setPublishError(data.message);
           return;
         }
         if (res.ok) {
           setPublishError(data.message);
           setFormData(data.posts[0]);
+          setpostId(data.posts[0]._id)
         }
       };
       fetchPost();
@@ -107,8 +108,9 @@ export const UpdatePost = () => {
     e.preventDefault();
     try {
       setPublishError(null);
+      
       const res = await fetch(
-        `${API_BASE_URL}/api/post/updatepost/${formData._id}/${currentUser.userId}`,
+        `${API_BASE_URL}/api/post/updatepost/${postid}/${currentUser.userId}`,
         {
           method: "PUT",
           credentials: "include",

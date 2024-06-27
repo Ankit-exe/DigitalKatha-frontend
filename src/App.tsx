@@ -9,6 +9,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import { PostCreate } from "./pages/PostCreate";
 import { Dashboard } from "./pages/Dashboard";
 import { UpdatePost } from "./pages/UpdatPost";
+import { PostPage } from "./pages/PostPage";
 
 function App() {
   return (
@@ -27,6 +28,14 @@ function App() {
           element={
             <Layout>
               <About />
+            </Layout>
+          }
+        />
+        <Route
+          path="/post/:postSlug"
+          element={
+            <Layout>
+              <PostPage />
             </Layout>
           }
         />
