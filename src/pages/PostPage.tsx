@@ -1,6 +1,7 @@
 import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { CommentSection } from "../components/CommentSection";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -79,6 +80,7 @@ export const PostPage = () => {
         className="p-3 max-w-2xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
+      {post && <CommentSection postId={post._id || ""} />}
     </main>
   );
 };

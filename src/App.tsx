@@ -10,10 +10,12 @@ import { PostCreate } from "./pages/PostCreate";
 import { Dashboard } from "./pages/Dashboard";
 import { UpdatePost } from "./pages/UpdatPost";
 import { PostPage } from "./pages/PostPage";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+    <ScrollToTop />
       <Routes>
         <Route
           path="/"
