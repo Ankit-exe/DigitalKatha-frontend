@@ -1,7 +1,7 @@
 import { Alert, Button, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Comment } from "./Comment";
 
 type Props = {
@@ -19,7 +19,8 @@ export const CommentSection = ({ postId }: Props) => {
   const [comment, setComment] = useState("");
   const [commetError, setcommentError] = useState("");
   const [comments, setComments] = useState<CommentData[]>([]);
-  console.log(comments);
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -46,7 +47,7 @@ export const CommentSection = ({ postId }: Props) => {
       const data = await res.json();
       setComment("");
       setcommentError("");
-      setComments([data,...comments])
+      setComments([data, ...comments]);
     } catch (error: any) {
       setcommentError(error.message);
     }
@@ -68,6 +69,40 @@ export const CommentSection = ({ postId }: Props) => {
     };
     getComments();
   }, [postId]);
+
+  const handleLike = async (commentId: any) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+      const res = await fetch(
+        `${API_BASE_URL}/api/comment/likeComment/${commentId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setComments((comments) =>
+          comments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : comment
+          )
+        );
+      } else {
+        throw new Error("Failed to like comment");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
@@ -133,7 +168,7 @@ export const CommentSection = ({ postId }: Props) => {
             </div>
           </div>
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} />
           ))}
         </>
       )}
