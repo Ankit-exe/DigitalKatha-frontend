@@ -58,8 +58,8 @@ export const PostPage = () => {
       <h1 className="text-4xl mt-10 font-bold max-w-2xl lg:text-4xl">
         {post && post.title}
       </h1>
-      <Link to={`/search?category=${post && post.category}`}>
-        <Button color="pink" pill size="xs" className="mt-5">
+      <Link to={`/search?category=${post && post.category}`} className="w-fit">
+        <Button color="pink" pill size="xs" className="mt-5 ">
           {post && post.category}
         </Button>
       </Link>

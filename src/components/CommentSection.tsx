@@ -1,8 +1,9 @@
-import { Alert, Button, Textarea } from "flowbite-react";
+import { Alert, Button, Modal, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Comment } from "./Comment";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 type Props = {
   postId: string;
@@ -19,6 +20,9 @@ export const CommentSection = ({ postId }: Props) => {
   const [comment, setComment] = useState("");
   const [commetError, setcommentError] = useState("");
   const [comments, setComments] = useState<CommentData[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [commentToDelete, setCommentTODelete] = useState(null);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,6 +30,7 @@ export const CommentSection = ({ postId }: Props) => {
     if (comment.length > 200) {
       return;
     }
+
     try {
       const res = await fetch(`${API_BASE_URL}/api/comment/create`, {
         method: "POST",
@@ -45,9 +50,9 @@ export const CommentSection = ({ postId }: Props) => {
       }
 
       const data = await res.json();
-      setComment("");
       setcommentError("");
       setComments([data, ...comments]);
+      setComment("");
     } catch (error: any) {
       setcommentError(error.message);
     }
@@ -110,6 +115,28 @@ export const CommentSection = ({ postId }: Props) => {
         c._id === comment._id ? { ...c, content: editedContent } : c
       )
     );
+  };
+
+  const handleDelete = async (commentId: any) => {
+    setShowModal(false);
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+      const res = await fetch(
+        `${API_BASE_URL}/api/comment/deleteComment/${commentId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      if (res.ok) {
+        setComments(comments.filter((comment) => comment._id !== commentId));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -181,10 +208,45 @@ export const CommentSection = ({ postId }: Props) => {
               comment={comment}
               onLike={handleLike}
               onEdit={handleEdit}
+              onDelete={(commentId: any) => {
+                setShowModal(true);
+                setCommentTODelete(commentId);
+              }}
             />
           ))}
         </>
       )}
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center ">
+            <HiOutlineExclamationCircle className="h-14 w-14 text-red-500 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="text-2xl font-semibold text-gray-800">
+              Delete comment
+            </h3>
+            <span className="text-sm text-gray-500 font-medium">
+              Deleting your comment will remove all of your information form our
+              database. This cannot be undone.
+            </span>
+            <div className="flex justify-center gap-4 mt-5">
+              <Button
+                color="failure"
+                onClick={() => handleDelete(commentToDelete)}
+              >
+                Yes
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

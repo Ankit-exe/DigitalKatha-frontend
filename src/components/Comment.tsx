@@ -12,7 +12,7 @@ interface UserData {
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export const Comment = ({ comment, onLike, onEdit }: any) => {
+export const Comment = ({ comment, onLike, onEdit, onDelete }: any) => {
   const [user, setUser] = useState<UserData | null>(null);
   const { currentUser } = useSelector((state: any) => state.user);
   const [isEditing, setIsEditing] = useState(false);
@@ -110,40 +110,53 @@ export const Comment = ({ comment, onLike, onEdit }: any) => {
                     gradientDuoTone="purpleToPink"
                     onClick={() => setIsEditing(false)}
                   >
-                    Cancle
+                    Cancel
                   </Button>
                 </div>
               </>
             ) : (
               <>
                 <p className=" text-gray-500 mb-2">{comment.content}</p>
-                <div className="flex flex-row gap-1 items-center pt-2 text-sm border-t border-gray-200 dark:border-gray-700 max-w-fit">
-                  <button
-                    type="button"
-                    onClick={() => onLike(comment._id)}
-                    className={`text-gray-400 hover:text-pink-500 ${
-                      currentUser &&
-                      comment.likes.includes(currentUser.userId) &&
-                      "!text-pink-500"
-                    }`}
-                  >
-                    <FaThumbsUp className="text-sm " />
-                  </button>
-                  <p className="text-gray-400">
-                    {comment.numberOfLikes > 0 &&
-                      comment.numberOfLikes +
-                        " " +
-                        (comment.numberOfLikes === 1 ? "like" : "likes")}
-                  </p>
-                  {currentUser && currentUser.userId === comment.userId && (
+                <div className="flex  justify-between flex-row  items-center pt-2 text-sm border-t border-gray-100 dark:border-gray-700 max-w-full">
+                  <div className="flex flex-row gap-1">
                     <button
                       type="button"
-                      onClick={handleEdit}
-                      className="text-gray-400 hover:text-pink-500 "
+                      onClick={() => onLike(comment._id)}
+                      className={`text-gray-400 hover:text-pink-500 ${
+                        currentUser &&
+                        comment.likes.includes(currentUser.userId) &&
+                        "!text-pink-500"
+                      }`}
                     >
-                      Edit
+                      <FaThumbsUp className="text-sm " />
                     </button>
-                  )}
+                    <p className="text-gray-400">
+                      {comment.numberOfLikes > 0 &&
+                        comment.numberOfLikes +
+                          " " +
+                          (comment.numberOfLikes === 1 ? "like" : "likes")}
+                    </p>
+                  </div>
+                  <div className="flex flex-row gap-3">
+                    {currentUser && currentUser.userId === comment.userId && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={handleEdit}
+                          className="text-gray-400 hover:text-green-500 "
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onDelete(comment._id)}
+                          className="text-gray-400 hover:text-red-500 "
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
               </>
             )}
