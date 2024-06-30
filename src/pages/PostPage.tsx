@@ -2,6 +2,7 @@ import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CommentSection } from "../components/CommentSection";
+import { PostCard } from "../components/PostCard";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -12,6 +13,15 @@ interface FormData {
   content?: any;
   _id?: string;
   createdAt?: any;
+  slug?: any;
+}
+interface Data {
+  updatedAt: Date;
+  title: string;
+  slug: string;
+  image: string;
+  category: string;
+  _id: string;
 }
 
 export const PostPage = () => {
@@ -19,6 +29,24 @@ export const PostPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState<FormData>();
+  const [recentPosts, setRecentPosts] = useState<Data[]>([]);
+  
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/post/getPosts?limit=3`);
+        const data = await res.json();
+        if (res.ok) {
+          setRecentPosts(data.posts);
+        } else {
+          console.error("Failed to fetch posts:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+    fetchRecentPosts();
+  }, []);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -53,6 +81,7 @@ export const PostPage = () => {
       </div>
     );
 
+
   return (
     <main className=" flex flex-col max-w-4xl mx-auto min-h-screen p-3">
       <h1 className="text-4xl mt-10 font-bold max-w-2xl lg:text-4xl">
@@ -81,6 +110,17 @@ export const PostPage = () => {
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
       {post && <CommentSection postId={post._id || ""} />}
+
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className="text-xl mt-5">Recent Article</h1>
+        <div>
+          {recentPosts.length > 0 ? (
+            recentPosts.map((post) => <PostCard key={post._id} post={post} />)
+          ) : (
+            <p>No recent posts available</p>
+          )}
+        </div>
+      </div>
     </main>
   );
 };

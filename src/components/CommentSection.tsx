@@ -216,6 +216,7 @@ export const CommentSection = ({ postId }: Props) => {
           ))}
         </>
       )}
+      
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
