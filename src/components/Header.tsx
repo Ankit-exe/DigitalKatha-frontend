@@ -95,7 +95,7 @@ export const Header = () => {
                 : "text-base underline-animation hover:text-pink-500"
             }
           >
-            <HomeTwoTone className="mr-1" twoToneColor="#fe3f96" />
+            <HomeTwoTone className={`mr-1`} twoToneColor="#fe3f96 " />
             Home
           </Link>
         </Navbar.Link>
