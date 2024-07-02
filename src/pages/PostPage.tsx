@@ -27,22 +27,27 @@ interface Data {
 export const PostPage = () => {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [post, setPost] = useState<FormData>();
+
   const [recentPosts, setRecentPosts] = useState<Data[]>([]);
 
   useEffect(() => {
     const fetchRecentPosts = async () => {
       try {
+        setLoading(true);
         const res = await fetch(`${API_BASE_URL}/api/post/getPosts?limit=3`);
         const data = await res.json();
         if (res.ok) {
           setRecentPosts(data.posts);
+          setLoading(false);
         } else {
-          console.error("Failed to fetch posts:", data.message);
+          setLoading(false);
+          setError("Something went wrong!");
         }
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        setLoading(false);
+        setError("Something went wrong!");
       }
     };
     fetchRecentPosts();
@@ -57,17 +62,17 @@ export const PostPage = () => {
         );
         const data = await res.json();
         if (!res.ok) {
-          setError(true);
+          setError("Something went wrong");
           setLoading(false);
           return true;
         }
         if (res.ok) {
           setPost(data.posts[0]);
-          setError(false);
+          setError("Something went wrong");
           setLoading(false);
         }
       } catch (error) {
-        setError(true);
+        setError("Something went wrong");
         setLoading(false);
       }
     };

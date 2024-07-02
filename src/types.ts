@@ -1,10 +1,12 @@
 export const options = [
     {
         id: 1,
+        value: "general-discussions",
         option: "General Discussions"
     },
     {
         id: 2,
+        
         option: "Emotional Well-being"
     },
     {
