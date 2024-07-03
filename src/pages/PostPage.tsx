@@ -130,7 +130,6 @@ export const PostPage = () => {
           )}
         </div>
       </div>
-      {error && <Alert color="failure">{error}</Alert>}
     </main>
   );
 };

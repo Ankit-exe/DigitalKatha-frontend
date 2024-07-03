@@ -78,6 +78,18 @@ export const Header = () => {
                 <Dropdown.Item>Profile</Dropdown.Item>
               </Link>
               <Dropdown.Divider />
+              <Dropdown.Item
+                onClick={() => dispatch(toogleTheme())}
+                className="md:hidden"
+              >
+                {theme === "light" ? (
+                  <FaMoon className="mr-1" />
+                ) : (
+                  <FaSun className="mr-1" />
+                )}
+                {theme === "light" ? "Light" : " Dark"}
+              </Dropdown.Item>
+              <Dropdown.Divider />
               <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
             </Dropdown>
           </>

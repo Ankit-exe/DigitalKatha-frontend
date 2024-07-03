@@ -1,12 +1,12 @@
 export const options = [
     {
         id: 1,
-        value: "general-discussions",
-        option: "General Discussions"
+        value: "",
+        option: "Uncategorized"
     },
     {
         id: 2,
-        
+        value: "emotional-well-being",
         option: "Emotional Well-being"
     },
     {
@@ -15,6 +15,7 @@ export const options = [
     },
     {
         id: 4,
+        value: "life-challenges",
         option: "Life Challenges"
     },
     {

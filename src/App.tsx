@@ -12,12 +12,13 @@ import { UpdatePost } from "./pages/UpdatPost";
 import { PostPage } from "./pages/PostPage";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { SearchBar } from "./components/SearchBar";
+import { Search } from "./pages/Search";
 
 function App() {
   return (
     <BrowserRouter>
-    <ScrollToTop />
-    <SearchBar />
+      <ScrollToTop />
+      <SearchBar />
       <Routes>
         <Route
           path="/"
@@ -27,6 +28,15 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/search"
+          element={
+            <Layout>
+              <Search />
+            </Layout>
+          }
+        />
+
         <Route
           path="/about"
           element={
