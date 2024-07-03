@@ -1,4 +1,4 @@
-import { Button, Spinner } from "flowbite-react";
+import { Alert, Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CommentSection } from "../components/CommentSection";
@@ -121,7 +121,7 @@ export const PostPage = () => {
       {post && <CommentSection postId={post._id || ""} />}
 
       <div className="flex flex-col justify-center items-center mb-5 mt-5 ">
-        <h1 className="text-2xl mt-5 font-semibold ">Recent Article</h1>
+        <h1 className="text-2xl mt-5 font-semibold ">Recent Stories</h1>
         <div className="flex flex-wrap gap-5 mt-20 justify-center">
           {recentPosts.length > 0 ? (
             recentPosts.map((post) => <PostCard key={post._id} post={post} />)
@@ -130,6 +130,7 @@ export const PostPage = () => {
           )}
         </div>
       </div>
+      {error && <Alert color="failure">{error}</Alert>}
     </main>
   );
 };

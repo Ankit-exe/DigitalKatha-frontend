@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const PostCard = ({ post }: any) => {
   return (
-    <div className="dark:shadow-gray-700 border-gray-200 border hover:shadow-md transition-shadow duration-300 overflow-hidden rounded-lg  w-full lg:w-[350px] group">
+    <div className="dark:shadow-gray-700 dark:border-gray-700 border hover:shadow-md transition-shadow duration-300 overflow-hidden rounded-lg  w-full lg:w-[350px] group">
       <Link to={`/post/${post.slug}`} className="flex flex-col gap-3">
         <img
           src={post.image}

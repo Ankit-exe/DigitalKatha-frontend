@@ -11,11 +11,13 @@ import { Dashboard } from "./pages/Dashboard";
 import { UpdatePost } from "./pages/UpdatPost";
 import { PostPage } from "./pages/PostPage";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { SearchBar } from "./components/SearchBar";
 
 function App() {
   return (
     <BrowserRouter>
     <ScrollToTop />
+    <SearchBar />
       <Routes>
         <Route
           path="/"

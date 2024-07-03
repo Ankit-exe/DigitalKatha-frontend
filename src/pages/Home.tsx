@@ -4,6 +4,7 @@ import { HomeCompo } from "../components/HomeCompo";
 import { Alert, Spinner } from "flowbite-react";
 import { PostCard } from "../components/PostCard";
 
+
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export interface FormData {
@@ -20,6 +21,7 @@ export const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [morePost, setMorePost] = useState<FormData[]>([]);
+  const [showMore, setShowMore] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -60,6 +62,22 @@ export const Home = () => {
         <Spinner size="xl" />
       </div>
     );
+
+  const handleShowMore = async () => {
+    const startIndex = morePost.length;
+    try {
+      const res = await fetch(
+        `${API_BASE_URL}/api/post/getposts?startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setMorePost((prev) => [...prev, ...data.posts]);
+        if (data.posts.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {}
+  };
   return (
     <div className="relative  container mx-auto">
       {error && (
@@ -79,7 +97,9 @@ export const Home = () => {
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7  ">
         {morePost && morePost.length > 0 && (
           <div>
-            <h2 className="text-2xl font-semibold text-center mt-20">Recent Posts</h2>
+            <h2 className="text-2xl font-semibold text-center mt-20">
+              Recent Posts
+            </h2>
             <div className="flex flex-wrap gap-8 justify-center mt-10">
               {morePost.map((post) => (
                 <PostCard key={post._id} post={post} />
@@ -88,6 +108,14 @@ export const Home = () => {
           </div>
         )}
       </div>
+      {showMore && (
+        <button
+          onClick={handleShowMore}
+          className="w-full text-pink-500 self-center text-sm py-7 hover:underline "
+        >
+          Show more
+        </button>
+      )}
       <CreatePost />
     </div>
   );

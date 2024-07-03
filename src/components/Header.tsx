@@ -9,7 +9,7 @@ import { AppstoreTwoTone, BookTwoTone, HomeTwoTone } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toogleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
-
+import { searchShow } from "../redux/search/searchSlice";
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const Header = () => {
@@ -36,15 +36,22 @@ export const Header = () => {
   };
 
   return (
-    <Navbar className="border-b-2">
+    <Navbar className="border-b-2 dark:bg-slate-900">
       <Link to="/" className="self-center ">
-        <img src={logo} alt="logo" className="h-16" />
+        <img
+          src={logo}
+          alt="logo"
+          className="h-16 filter drop-shadow-lg shadow-purple-600"
+        />
       </Link>
       <div className="flex gap-3 md:order-3">
-        <button>
+        <button
+          className="flex flex-row items-center border dark:border-gray-600 border-gray-200 rounded-2xl px-3 "
+          onClick={() => dispatch(searchShow())}
+        >
           <AiOutlineSearch
             size={30}
-            className="text-gray-500 hover:text-pink-500  transition-all"
+            className="text-gray-500 hover:text-pink-500 transition-all"
           />
         </button>
         <Button
