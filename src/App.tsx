@@ -15,6 +15,7 @@ import { SearchBar } from "./components/SearchBar";
 import { Search } from "./pages/Search";
 import { Contact } from "./pages/Contact";
 import { Privacypolicy } from "./pages/Privacypolicy";
+import { License } from "./pages/License";
 
 function App() {
   return (
@@ -35,6 +36,14 @@ function App() {
           element={
             <Layout>
               <Contact />
+            </Layout>
+          }
+        />
+        <Route
+          path="/license"
+          element={
+            <Layout>
+              <License />
             </Layout>
           }
         />
