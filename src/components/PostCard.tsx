@@ -1,8 +1,14 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export const PostCard = ({ post }: any) => {
   return (
-    <div className="dark:shadow-gray-700 dark:border-gray-700 border hover:shadow-md transition-shadow duration-300 overflow-hidden rounded-lg  w-full lg:w-[350px] group">
+    <motion.div
+      initial={{ y: 50, opacity: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="dark:shadow-gray-700 dark:border-gray-700 border hover:shadow-md transition-shadow duration-300 overflow-hidden rounded-lg  w-full lg:w-[350px] group"
+    >
       <Link to={`/post/${post.slug}`} className="flex flex-col gap-3">
         <img
           src={post.image}
@@ -23,6 +29,6 @@ export const PostCard = ({ post }: any) => {
           ></p>
         </div>
       </Link>
-    </div>
+    </motion.div>
   );
 };

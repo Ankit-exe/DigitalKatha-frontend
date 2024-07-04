@@ -4,6 +4,11 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { Alert, Spinner } from "flowbite-react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 //SCHEMA DEFINE
 
@@ -23,9 +28,10 @@ type SchemaProps = z.infer<typeof formSchema>;
 
 export const Contact = () => {
   // form state
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [formdata, setFormData] = useState();
+  const [formSubmitted, setFormSubmitted] = useState<Boolean>(false);
   const [loading, setLoading] = useState(false);
+  const { currentUser } = useSelector((state: any) => state.user);
+  const navigate = useNavigate();
 
   //react query
 
@@ -43,15 +49,39 @@ export const Contact = () => {
   const onSubmit = async (formdata: SchemaProps) => {
     setLoading(true);
     try {
+      const res = await fetch(`${API_BASE_URL}/api/contact/sendmessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formdata),
+      });
+      if (res.ok) {
+        setFormSubmitted(true);
+        setLoading(false);
+        reset();
+      }
+      if (!res.ok) {
+        setFormSubmitted(false);
+        setLoading(false);
+      }
     } catch (error) {
-        
+      setLoading(false);
     }
-    setFormSubmitted(true);
-    reset();
   };
 
   return (
-    <div className="h-screen mb-20">
+    <div className="h-screen mb-20 relative">
+      {formSubmitted && (
+        <Alert
+          color="success"
+          className="fixed z-50 right-0"
+          onDismiss={() => setFormSubmitted(false)}
+        >
+          <span className="font-medium">Message sent successfully!</span>
+        </Alert>
+      )}
       <div className="text-center text-4xl  font-semibold flex flex-col py-20 gap-3">
         <motion.span
           initial={{ y: 100, opacity: 0 }}
@@ -68,7 +98,6 @@ export const Contact = () => {
           We'll <span className="text-pink-500">glad</span> to hear from you.
         </motion.span>
       </div>
-
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -126,13 +155,23 @@ export const Contact = () => {
                 <p className="text-red-700">{errors.message.message}</p>
               )}
             </div>
-
-            <button
-              type="submit"
-              className="bg-purple text-white py-2 rounded-lg bg-pink-500 hover:bg-pink-400 duration-150"
-            >
-              Send
-            </button>
+            {currentUser ? (
+              <button
+                type="submit"
+                className="bg-purple text-white py-2 rounded-lg bg-pink-500 hover:bg-pink-400 duration-150"
+              >
+                {loading && <Spinner />}
+                Send
+              </button>
+            ) : (
+              <button
+                className="bg-purple text-white py-2 rounded-lg bg-pink-500 hover:bg-pink-400 duration-150"
+                onClick={() => navigate("/sign-in")}
+              >
+                {loading && <Spinner />}
+                Sign In to contact
+              </button>
+            )}
           </form>
         </div>
       </motion.div>

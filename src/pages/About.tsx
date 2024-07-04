@@ -1,9 +1,15 @@
 import { PlusCircleFilled } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export const About = () => {
   return (
-    <div className="max-w-5xl mx-auto py-20 flex-col flex gap-14 px-2">
+    <motion.div
+      initial={{ y: 100, opacity: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-5xl mx-auto py-20 flex-col flex gap-14 px-2"
+    >
       <div className="flex flex-col gap-5">
         <h1 className="font-semibold text-4xl flex">
           Welcome to{" "}
@@ -68,6 +74,6 @@ export const About = () => {
       <div className="text-base text-gray-500">
         <p>Thank you for being here and for being part of Digitalकथा ❤️.</p>
       </div>
-    </div>
+    </motion.div>
   );
 };

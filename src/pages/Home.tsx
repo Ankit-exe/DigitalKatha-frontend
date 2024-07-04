@@ -3,7 +3,7 @@ import { CreatePost } from "../components/CreatePost";
 import { HomeCompo } from "../components/HomeCompo";
 import { Alert, Spinner } from "flowbite-react";
 import { PostCard } from "../components/PostCard";
-
+import { motion } from "framer-motion";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -97,9 +97,14 @@ export const Home = () => {
       <div className="max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7  ">
         {morePost && morePost.length > 0 && (
           <div>
-            <h2 className="text-2xl font-semibold text-center mt-20">
+            <motion.h2
+              initial={{ y: 50, opacity: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-2xl font-semibold text-center mt-20"
+            >
               Recent Posts
-            </h2>
+            </motion.h2>
             <div className="flex flex-wrap gap-8 justify-center mt-10">
               {morePost.map((post) => (
                 <PostCard key={post._id} post={post} />

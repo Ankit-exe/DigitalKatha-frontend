@@ -1,20 +1,31 @@
 import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export const HomeCompo = ({ post }: any) => {
   return (
     <div className=" w-full mx-auto mt-20 ">
       {post.post ? (
         <div className="grid lg:grid-cols-11  h-full ">
-          <div className="lg:col-span-5 h-full">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-5 h-full"
+          >
             <Link to={`/post/${post.post.slug}`}>
               <img
                 src={post.post.image}
                 className="h-[380px] w-[680px] object-cover rounded-2xl hover:scale-105 transition-scale duration-300 bg-gray-100 "
               />
             </Link>
-          </div>
-          <div className=" lg:col-span-6 h-full py-10 lg:ml-10">
+          </motion.div>
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className=" lg:col-span-6 h-full py-10 lg:ml-10"
+          >
             <div className="flex flex-col gap-5">
               <span className="text-pink-500 text-sm hover:scale-105 transition-all duration-200 w-fit ">
                 {post.post.category}
@@ -34,7 +45,7 @@ export const HomeCompo = ({ post }: any) => {
                 </Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       ) : (
         ""
