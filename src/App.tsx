@@ -13,6 +13,7 @@ import { PostPage } from "./pages/PostPage";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { SearchBar } from "./components/SearchBar";
 import { Search } from "./pages/Search";
+import { Contact } from "./pages/Contact";
 
 function App() {
   return (
@@ -25,6 +26,14 @@ function App() {
           element={
             <Layout>
               <Home />
+            </Layout>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <Layout>
+              <Contact />
             </Layout>
           }
         />
