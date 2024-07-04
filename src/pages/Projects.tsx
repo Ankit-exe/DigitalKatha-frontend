@@ -10,12 +10,12 @@ export const Projects = () => {
       className="max-w-5xl mx-auto py-20 flex-col flex gap-14 px-2"
     >
       <div className="flex flex-col gap-5">
-        <h1 className="font-semibold text-4xl flex">
-          Explore Our Other
-          <p className="ml-2 text-pink-500 font-bold hover:scale-105 transition-all duration-300">
+        <div className="font-semibold text-4xl flex flex-wrap">
+          <span>Explore Our Other</span>
+          <span className="ml-2 text-pink-500 font-bold hover:scale-105 transition-all duration-300">
             Projects
-          </p>
-        </h1>
+          </span>
+        </div>
         <p className="text-gray-500 text-base">
           Welcome to our Other Projects. Here, we showcase additional
           initiatives and collaborations that extend our mission of celebrating

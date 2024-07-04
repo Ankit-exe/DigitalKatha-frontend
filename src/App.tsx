@@ -14,6 +14,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { SearchBar } from "./components/SearchBar";
 import { Search } from "./pages/Search";
 import { Contact } from "./pages/Contact";
+import { Privacypolicy } from "./pages/Privacypolicy";
 
 function App() {
   return (
@@ -34,6 +35,14 @@ function App() {
           element={
             <Layout>
               <Contact />
+            </Layout>
+          }
+        />
+        <Route
+          path="/privacy-policy"
+          element={
+            <Layout>
+              <Privacypolicy />
             </Layout>
           }
         />

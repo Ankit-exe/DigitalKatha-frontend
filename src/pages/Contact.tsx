@@ -29,6 +29,7 @@ type SchemaProps = z.infer<typeof formSchema>;
 export const Contact = () => {
   // form state
   const [formSubmitted, setFormSubmitted] = useState<Boolean>(false);
+
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state: any) => state.user);
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ export const Contact = () => {
   };
 
   return (
-    <div className="h-screen mb-20 relative">
+    <div className="h-screen mb-20 relative px-2 overflow-hidden">
       {formSubmitted && (
         <Alert
           color="success"
@@ -102,14 +103,14 @@ export const Contact = () => {
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full justify-center flex absolute"
+        className="w-full justify-center flex"
       >
         {/* FORM CONTAINER */}
 
-        <div className="p-10  z-10 rounded-xl shadow-xl bg-gray-100 dark:bg-slate-700">
+        <div className="p-5 flex flex-col justify-center content-center items-center  w-full md:w-auto z-10 rounded-xl shadow-xl bg-gray-100 dark:bg-slate-700">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 md:w-[500px]"
+            className="flex flex-col gap-5  w-[80%] md:w-[500px]"
           >
             <div className="flex flex-col gap-1">
               <label className="font-semibold text-sm">Your name :</label>
