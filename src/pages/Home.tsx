@@ -101,7 +101,7 @@ export const Home = () => {
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-2xl font-semibold text-center mt-20"
+              className="text-2xl font-semibold text-center lg:my-10 mb-5"
             >
               Recent Posts
             </motion.h2>

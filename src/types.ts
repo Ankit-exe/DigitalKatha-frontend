@@ -1,41 +1,62 @@
 export const options = [
     {
         id: 1,
-        value: "",
+        value: "uncategorized",
         option: "Uncategorized"
     },
     {
         id: 2,
-        value: "emotional-well-being",
-        option: "Emotional Well-being"
+        value: "childhood-memories",
+        option: "Childhood Memories"
     },
     {
         id: 3,
-        option: "Mental Health"
+        value: "life-lessons",
+        option: "Life Lessons"
     },
     {
         id: 4,
-        value: "life-challenges",
-        option: "Life Challenges"
+        value: "travel-adventures",
+        option: "Travel Adventures"
     },
     {
         id: 5,
-        option: "Personal Growth"
+        value: "overcoming-challenges",
+        option: "Overcoming Challenges"
     },
     {
         id: 6,
-        option: "Support and Resources"
+        value: "love-and-relationships",
+        option: "Love and Relationships"
     },
     {
         id: 7,
-        option: "Creative Expression"
+        value: "career-and-achievements",
+        option: "Career and Achievements"
     },
     {
         id: 8,
-        option: "Community and Social Issues"
+        value: "personal-transformation",
+        option: "Personal Transformation"
     },
     {
         id: 9,
+        value: "nsfw",
         option: "NSFW"
+    },
+    {
+        id: 10,
+        value: "cultural-heritage",
+        option: "Cultural Heritage"
+    },
+    {
+        id: 11,
+        value: "health-and-wellness",
+        option: "Health and Wellness"
+    },
+    {
+        id: 12,
+        value: "acts-of-kindness",
+        option: "Acts of Kindness"
     },
 ]

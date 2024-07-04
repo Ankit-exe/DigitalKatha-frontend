@@ -105,12 +105,12 @@ export const Header = () => {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse className="border-solid border-2 border-gray-200 rounded-md md:border-none">
-        <Navbar.Link active={path === "/"} as={"div"} className="dark:bg-gray">
+        <Navbar.Link active={path === "/"} as={"div"} className="dark:bg-gray ">
           <Link
             to="/"
             className={
               path === "/"
-                ? "block py-2 px-3 text-white bg-pink-600 rounded md:bg-transparent md:text-pink-600 md:p-0 dark:text-white md:dark:text-pink-500 text-base"
+                ? "block py-2 px-3 text-white  rounded bg-transparent md:text-pink-600 md:p-0 dark:text-white md:dark:text-pink-500 text-base "
                 : "text-base underline-animation hover:text-pink-500"
             }
           >
@@ -127,7 +127,7 @@ export const Header = () => {
             to="/about"
             className={
               path === "/about"
-                ? "block py-2 px-3 text-white bg-pink-600 rounded md:bg-transparent md:text-pink-600 md:p-0 dark:text-white md:dark:text-pink-500 text-base "
+                ? "block py-2 px-3 text-white  rounded md:bg-transparent md:text-pink-600 md:p-0 dark:text-white md:dark:text-pink-500 text-base "
                 : "text-base underline-animation hover:text-pink-500"
             }
           >
@@ -144,7 +144,7 @@ export const Header = () => {
             to="/projects"
             className={
               path === "/projects"
-                ? "block py-2 px-3 text-white bg-pink-600 rounded md:bg-transparent md:text-pink-600 md:p-0 dark:text-white md:dark:text-pink-500 text-base"
+                ? "block py-2 px-3 text-white x rounded md:bg-transparent md:text-pink-600 md:p-0 dark:text-white md:dark:text-pink-500 text-base"
                 : "text-base underline-animation hover:text-pink-500"
             }
           >
