@@ -41,19 +41,16 @@ export const Header = () => {
         <img
           src={logo}
           alt="logo"
-          className="h-16 filter drop-shadow-lg shadow-purple-600"
+          className=" h-12 md:h-16 filter drop-shadow-lg shadow-purple-600"
         />
       </Link>
-      <div className="flex gap-3 md:order-3">
-        <button
-          className="flex flex-row items-center border dark:border-gray-600 border-gray-200 rounded-2xl px-3 "
+      <div className="flex gap-3 md:order-3 items-center">
+        <AiOutlineSearch
+          size={30}
           onClick={() => dispatch(searchShow())}
-        >
-          <AiOutlineSearch
-            size={30}
-            className="text-gray-500 hover:text-pink-500 transition-all"
-          />
-        </button>
+          className="text-gray-500 hover:text-pink-500 transition-all"
+        />
+
         <Button
           className="w-12 h-10 hidden sm:inline"
           color="gray"
