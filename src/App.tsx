@@ -16,8 +16,10 @@ import { Search } from "./pages/Search";
 import { Contact } from "./pages/Contact";
 import { Privacypolicy } from "./pages/Privacypolicy";
 import { License } from "./pages/License";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { currentUser } = useSelector((state: any) => state.user);
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -80,8 +82,14 @@ function App() {
             </Layout>
           }
         />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route
+          path="/sign-in"
+          element={currentUser ? <Navigate to="/" /> : <SignIn />}
+        />
+        <Route
+          path="/sign-up"
+          element={currentUser ? <Navigate to="/" /> : <SignUp />}
+        />
 
         <Route element={<PrivateRoute />}>
           <Route
@@ -119,8 +127,8 @@ function App() {
             </Layout>
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      <Route path="*" element={<Navigate to="/" />} />
     </BrowserRouter>
   );
 }
