@@ -72,7 +72,7 @@ export const SearchBar = () => {
                     className="w-full text-base font-semibold px-3 py-3 bg-slate-300 rounded-xl line-clamp-1 flex justify-between hover:cursor-pointer text-gray-600 hover:bg-pink-500 hover:text-white transition-all duration-100 ease-in-out"
                     onClick={() => dispatch(searchHide())}
                   >
-                    {recentSearch}
+                    {recentSearch?  recentSearch : 'All'}
                     <ArrowRightOutlined className="animate-pulse " />
                   </div>
                 </Link>

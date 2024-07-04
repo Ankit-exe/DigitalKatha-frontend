@@ -6,6 +6,16 @@ import { PostCard } from "../components/PostCard";
 
 const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
+interface FormData {
+  image?: string;
+  title?: string;
+  category?: string;
+  content?: any;
+  _id?: string;
+  createdAt?: any;
+  slug?: any;
+}
+
 export const Search = () => {
   const [sidebarData, setSideBarData] = useState<any>({
     searchTerm: "",
@@ -16,10 +26,9 @@ export const Search = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState<FormData[]>([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
-  const [morePost, setMorePost] = useState<FormData[]>([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -72,15 +81,25 @@ export const Search = () => {
     }
   };
   const handleShowMore = async () => {
-    const startIndex = morePost.length;
+    const numberOfPosts = post.length;
+    const startIndex = numberOfPosts.toString();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
     try {
       const res = await fetch(
-        `${API_BASE_URL}/api/post/getposts?startIndex=${startIndex}`
+        `${API_BASE_URL}/api/post/getposts?${searchQuery}`
       );
-      const data = await res.json();
+
+      if (!res.ok) {
+        return;
+      }
       if (res.ok) {
-        setMorePost((prev) => [...prev, ...data.posts]);
-        if (data.posts.length < 9) {
+        const data = await res.json();
+        setPost([...post, ...data.posts]);
+        if (data.posts.length === 9) {
+          setShowMore(true);
+        } else {
           setShowMore(false);
         }
       }
