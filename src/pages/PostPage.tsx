@@ -103,7 +103,7 @@ export const PostPage = () => {
         <img
           src={post && post.image}
           alt={post?.title}
-          className="mt-5 rounded-md max-h-[600px] w-full object-cover"
+          className="mt-5 rounded-md max-h-[400px] w-full object-cover"
         />
         <div className="flex flex-row border-b p-2">
           <span className="flex-1">
