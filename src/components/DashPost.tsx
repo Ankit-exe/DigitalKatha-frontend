@@ -91,7 +91,7 @@ export const DashPost = () => {
   };
 
   return (
-    <div className="table-auto w-full overflow-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-300 ">
+    <div className="table-auto w-full overflow-scroll md:mx-auto p-3 scrollbar-thin scrollbar-track-slate-300 ">
       {currentUser && userPosts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md dark:bg-gray-800">
