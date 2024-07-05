@@ -159,7 +159,7 @@ export const UpdatePost = () => {
           >
             <option value="uncategorized">Select a category</option>
             {options.map((option) => (
-              <option key={option.id} value={option.option}>
+              <option key={option.id} value={option.value}>
                 {option.option}
               </option>
             ))}
