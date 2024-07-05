@@ -60,15 +60,12 @@ export const Projects = () => {
               FreshMilk.com:
             </li>
             <p className="text-gray-500 text-base">
-              The "Yatra" mobile application is designed to enhance the
-              commuting experience by providing real-time tracking of public
-              vehicles. This niche focus requires a deep understanding of
-              various aspects of mobile applications, such as user experience,
-              personalization, trust and security, and regional optimization,
-              all tailored to the unique needs of a public transportation
-              tracking app. This literature review explores existing knowledge
-              on these aspects, drawing on insights from relevant applications
-              and studies.
+              At FreshMilk.com, we are passionate about providing you with the
+              freshest and highest quality dairy products sourced directly from
+              local farms and producers. Our mission is to make it easy for you
+              to enjoy the wholesome goodness of farm-fresh milk, cheese,
+              butter, yogurt, and more, all while supporting local farmers and
+              sustainable practices.
             </p>
           </div>
           <div>
